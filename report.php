@@ -1,44 +1,43 @@
-<?php
-session_start();
+<?php session_start(); 
 
 $filePath = "user_data.txt";
-$message = "";
-$submitted = false;
+    $message = "";
+    $submitted = false;
 
-function sanitize($data) {
-  return htmlSpecialChars(trim($data));
-}
-
-function fileExistsMessage($filePath) {
-  return file_exists($filePath) ? "File already created." : "File not found.";
-}
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-  $action = $_POST['action'] ?? '';
-  $name = sanitize($_POST['name'] ?? '');
-  $email = sanitize($_POST['email'] ?? '');
-
-  if ($action === 'create') {
-    if (file_exists($filePath)) {
-      $message = "<span class='text-red-500'>File already created!</span>";
-    } else {
-      if (!empty($name) && !empty($email)) {
-        file_put_contents($filePath, "$name | $email\n");
-        $message = "<span class='text-green-600'>Data saved and file created!</span>";
-        $submitted = true;
-      }
+    function sanitize($data) {
+    return htmlSpecialChars(trim($data));
     }
-  } elseif ($action === 'delete') {
-    if (file_exists($filePath) && fileSize($filePath) > 0) {
-      unlink($filePath);
-      $message = "<span class='text-red-600'>File deleted successfully.</span>";
-    } else {
-      $message = "<span class='text-yellow-500'>Nothing to delete!</span>";
-    }
-  }
-}
 
-$data = file_exists($filePath) ? file_get_contents($filePath) : '';
+    function fileExistsMessage($filePath) {
+    return file_exists($filePath) ? "File already created." : "File not found.";
+    }
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $action = $_POST['action'] ?? '';
+    $name = sanitize($_POST['name'] ?? '');
+    $email = sanitize($_POST['email'] ?? '');
+
+    if ($action === 'create') {
+        if (file_exists($filePath)) {
+        $message = "<span class='text-red-500'>File already created!</span>";
+        } else {
+        if (!empty($name) && !empty($email)) {
+            file_put_contents($filePath, "$name | $email\n");
+            $message = "<span class='text-green-600'>Data saved and file created!</span>";
+            $submitted = true;
+        }
+        }
+    } elseif ($action === 'delete') {
+        if (file_exists($filePath) && fileSize($filePath) > 0) {
+        unlink($filePath);
+        $message = "<span class='text-red-600'>File deleted successfully.</span>";
+        } else {
+        $message = "<span class='text-yellow-500'>Nothing to delete!</span>";
+        }
+    }
+    }
+
+    $data = file_exists($filePath) ? file_get_contents($filePath) : '';
 ?>
 
 <!DOCTYPE html>
@@ -212,7 +211,7 @@ $data = file_exists($filePath) ? file_get_contents($filePath) : '';
     </section>
 
         <section class="bg-white p-6 rounded-2xl shadow-xl mt-10">
-      <h2 class="text-2xl font-bold mb-4 text-purple-700">PHP Superglobals Practice</h2>
+      <h2 class="text-2xl font-bold mb-4 text-purple-700">PHP SuperGlobals Practice</h2>
 
       <div class="text-sm text-gray-700 space-y-2">
         <p><strong>Current Script:</strong> <?= $_SERVER['PHP_SELF'] ?></p>
@@ -251,9 +250,354 @@ $data = file_exists($filePath) ? file_get_contents($filePath) : '';
         <button type="submit" class="bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700">Set Session</button>
       </form>
     </section>
+    <section class="bg-white p-6 rounded-2xl shadow-xl mt-10">
+        <h2 class="text-2xl font-bold mb-4 text-purple-700">Loops & Arrays Practice</h2>
+        <?php
+        $skills = ["HTML", "CSS", "JavaScript", "Vue", "PHP", "Laravel"];
+        
+        echo "<div class='mb-4'>";
+        echo "<h3 class='text-lg font-semibold text-gray-700 mb-2'>My Skills (Indexed Array with foreach):</h3>";
+        echo "<ul class='list-disc list-inside space-y-1'>";
+        foreach ($skills as $skill) {
+            echo "<li class='text-blue-600'>$skill</li>";
+        }
+        echo "</ul></div>";
 
+        $profile = [
+            "Name" => "Hamza Jabbar",
+            "Age" => 22,
+            "Location" => "Pakistan",
+            "Learning" => "PHP"
+        ];
+
+        echo "<div class='mb-4'>";
+        echo "<h3 class='text-lg font-semibold text-gray-700 mb-2'>My Profile (Associative Array with foreach):</h3>";
+        echo "<ul class='list-disc list-inside space-y-1'>";
+        foreach ($profile as $key => $value) {
+            echo "<li><span class='font-medium text-gray-800'>$key:</span> <span class='text-green-700'>$value</span></li>";
+        }
+        echo "</ul></div>";
+
+        echo "<div>";
+        echo "<h3 class='text-lg font-semibold text-gray-700 mb-2'>Numbers (for loop):</h3>";
+        for ($i = 1; $i <= 5; $i++) {
+            echo "<span class='inline-block bg-gray-200 text-gray-800 px-3 py-1 rounded-full mr-2 mb-2'>$i</span>";
+        }
+        echo "</div>";
+        ?>
+    </section>
+    <section class="bg-white p-6 rounded-2xl shadow-xl mt-10">
+        <h2 class="text-2xl font-bold mb-4 text-purple-700">PHP Functions Practice</h2>
+
+        <?php
+        
+        function calculateArea($length, $width) {
+            return $length * $width;
+        }
+
+        
+        function greetUser($name) {
+            return "Welcome, <span class='text-blue-600 font-semibold'>" . htmlSpecialChars($name) . "</span>!";
+        }
+
+        $userName = "Hamza";
+        $area = calculateArea(5, 8);
+        ?>
+
+        <div class="text-lg space-y-2">
+        <p><?= greetUser($userName); ?></p>
+        <p>The area of a 5 x 8 rectangle is: 
+            <span class="text-green-700 font-semibold"><?= $area ?> square units</span></p>
+        </div>
+    </section>
+    <section class="bg-white p-6 rounded-2xl shadow-xl mt-10">
+        <h2 class="text-2xl font-bold mb-4 text-purple-700">PHP GET vs POST Method Demo</h2>
+
+        <form method="GET" class="space-y-4 mb-6">
+        <label class="block text-sm font-medium">Enter your city (GET method):</label>
+        <input type="text" name="city" class="w-full border px-3 py-2 rounded-md" placeholder="e.g. Lahore">
+        <button type="submit" class="bg-teal-600 text-white px-4 py-2 rounded-md">Submit via GET</button>
+        </form>
+
+        <form method="POST" class="space-y-4">
+        <label class="block text-sm font-medium">Enter your profession (POST method):</label>
+        <input type="text" name="profession" class="w-full border px-3 py-2 rounded-md" placeholder="e.g. Developer">
+        <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded-md">Submit via POST</button>
+        </form>
+
+        <div class="mt-6 bg-gray-100 p-4 rounded-md space-y-2">
+        <?php
+            if (isset($_GET['city'])) {
+            $city = sanitize($_GET['city']);
+            echo "<p class='text-blue-600'>You are from: <strong>$city</strong></p>";
+            }
+
+            if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['profession'])) {
+            $profession = sanitize($_POST['profession']);
+            echo "<p class='text-purple-600'>Your profession is: <strong>$profession</strong></p>";
+            }
+        ?>
+        </div>
+    </section>
+    <section class="bg-white p-6 rounded-2xl shadow-xl mt-10">
+      <h2 class="text-2xl font-bold mb-4 text-purple-700">PHP Loops & Arrays</h2>
+
+      <?php
+        $technologies = ["HTML", "CSS", "Tailwind", "JavaScript", "Vue.js", "PHP", "Laravel"];
+        $colors = ["text-red-500", "text-blue-500", "text-green-500", "text-yellow-600", "text-purple-600", "text-indigo-500", "text-pink-500"];
+      ?>
+
+      <p class="mb-2 font-medium text-gray-700">Technologies I've worked with:</p>
+      <ul class="list-disc list-inside space-y-1 text-lg">
+        <?php
+          foreach ($technologies as $index => $tech) {
+            echo "<li class='{$colors[$index]} font-semibold'>$tech</li>";
+          }
+        ?>
+      </ul>
+
+      <div class="mt-6">
+        <p class="mb-2 font-medium text-gray-700">Counting from 1 to 5:</p>
+        <div class="flex gap-3 text-lg font-bold text-white">
+          <?php
+            for ($i = 1; $i <= 5; $i++) {
+              echo "<span class='bg-blue-600 px-3 py-1 rounded-full'>$i</span>";
+            }
+          ?>
+        </div>
+      </div>
+    </section>
+    <section class="bg-white p-6 rounded-2xl shadow-xl mt-10">
+        <h2 class="text-2xl font-bold mb-4 text-purple-700">Associative Arrays Practice</h2>
+        <?php
+            $book = [
+            'title' => 'Clean Code',
+            'author' => 'Robert C. Martin',
+            'year' => 2008,
+            'publisher' => 'Prentice Hall'
+            ];
+        ?>
+        <div class="grid grid-cols-2 gap-4 text-gray-800 text-lg">
+            <div><strong>Title:</strong></div>
+            <div class="text-blue-600"><?= $book['title'] ?></div>
+
+            <div><strong>Author:</strong></div>
+            <div class="text-green-600"><?= $book['author'] ?></div>
+
+            <div><strong>Year:</strong></div>
+            <div class="text-purple-600"><?= $book['year'] ?></div>
+
+            <div><strong>Publisher:</strong></div>
+            <div class="text-red-600"><?= $book['publisher'] ?></div>
+        </div>
+    </section>
+
+    <section class="bg-white p-6 rounded-2xl shadow-xl mt-10">
+        <h2 class="text-2xl font-bold mb-4 text-purple-700">Filtering Arrays</h2>
+
+        <?php
+            $books = [
+            ['title' => 'Clean Code', 'author' => 'Robert C. Martin', 'releaseYear' => 2008],
+            ['title' => 'The Pragmatic Programmer', 'author' => 'Andy Hunt', 'releaseYear' => 1999],
+            ['title' => 'Atomic Habits', 'author' => 'James Clear', 'releaseYear' => 2018],
+            ['title' => 'Refactoring', 'author' => 'Martin Fowler', 'releaseYear' => 1999],
+            ];
+
+            $filtered = array_filter($books, function ($book) {
+            return $book['releaseYear'] >= 2000;
+            });
+        ?>
+
+        <div class="text-gray-800 space-y-2">
+            <p class="font-medium">Books Released After 2000:</p>
+            <ul class="list-disc ml-6 space-y-1">
+            <?php foreach ($filtered as $book): ?>
+                <li>
+                <span class="text-blue-600 font-semibold"><?= $book['title'] ?></span> 
+                by <?= $book['author'] ?> (<?= $book['releaseYear'] ?>)
+                </li>
+            <?php endforeach; ?>
+            </ul>
+        </div>
+    </section>
+
+    <section class="bg-white p-6 rounded-2xl shadow-xl mt-10">
+        <h2 class="text-2xl font-bold mb-4 text-purple-700">Extracting Functions</h2>
+
+        <?php
+            if (!function_exists('greetUser')) {
+            function greetUser($name) {
+                return "Hello, " . ucfirst($name) . "! Welcome to PHP practice.";
+            }
+            }
+
+            if (!function_exists('formatCurrency')) {
+            function formatCurrency($amount) {
+                return "$" . number_format($amount, 2);
+            }
+            }
+
+            $userName = "hamza";
+            $purchaseAmount = 77,501.01;
+        ?>
+        <div class="space-y-2 text-gray-800">
+            <p><?= greetUser($userName); ?></p>
+            <p>You have spent: <strong class="text-green-600"><?= formatCurrency($purchaseAmount); ?></strong></p>
+        </div>
+    </section>
+
+    <section class="bg-white p-6 rounded-2xl shadow-xl mt-10">
+        <h2 class="text-2xl font-bold mb-4 text-purple-700">Associative Arrays Practice</h2>
+
+        <?php
+            $book = [
+            'title' => 'The Clean Coder',
+            'author' => 'Robert C. Martin',
+            'release_year' => 2011,
+            'available' => true
+            ];
+        ?>
+
+        <ul class="list-disc pl-5 space-y-1 text-gray-800">
+            <li><strong>Title:</strong> <?= $book['title'] ?></li>
+            <li><strong>Author:</strong> <?= $book['author'] ?></li>
+            <li><strong>Release Year:</strong> <?= $book['release_year'] ?></li>
+            <li>
+            <strong>Status:</strong>
+            <?= $book['available'] ? "<span class='text-green-600 font-semibold'>Available</span>" : "<span class='text-red-600 font-semibold'>Out of Stock ❌</span>" ?>
+            </li>
+        </ul>
+    </section>
+
+    <section class="bg-white p-6 rounded-2xl shadow-xl mt-10">
+    <h2 class="text-2xl font-bold mb-4 text-purple-700">Refactor to a Function</h2>
+
+    <?php
+        $books = [
+        ['title' => 'Clean Code', 'available' => true],
+        ['title' => 'The Pragmatic Programmer', 'available' => false],
+        ['title' => 'Refactoring', 'available' => true],
+        ['title' => 'Code Complete', 'available' => false],
+        ];
+
+        function getAvailableBooks($books) {
+        $availableBooks = [];
+        foreach ($books as $book) {
+            if ($book['available']) {
+            $availableBooks[] = $book;
+            }
+        }
+        return $availableBooks;
+        }
+
+        $availableBooks = getAvailableBooks($books);
+    ?>
+
+    <h3 class="text-xl font-semibold text-gray-800 mb-2">Available Books:</h3>
+    <ul class="list-disc pl-5 text-gray-700">
+        <?php foreach ($availableBooks as $book): ?>
+        <li><?= $book['title'] ?></li>
+        <?php endforeach; ?>
+    </ul>
+    </section>
+    <section class="bg-white p-6 rounded-2xl shadow-xl mt-10">
+    <h2 class="text-2xl font-bold mb-4 text-purple-700">Arrow Functions</h2>
+
+    <?php
+        $numbers = [1, 2, 3, 4, 5, 6];
+
+        
+        $evenNumbersOld = array_filter($numbers, function ($num) {
+        return $num % 2 === 0;
+        });
+
+        $evenNumbers = array_filter($numbers, fn($num) => $num % 2 === 0);
+    ?>
+
+    <div class="mb-4">
+        <h3 class="text-lg font-semibold text-gray-800">Even Numbers (Arrow Function):</h3>
+        <p class="text-gray-700">
+        <?= implode(', ', $evenNumbers) ?>
+        </p>
+    </div>
+
+    <div>
+        <h3 class="text-lg font-semibold text-gray-800">Original Numbers:</h3>
+        <p class="text-gray-700"><?= implode(', ', $numbers) ?></p>
+    </div>
+    </section>
+    <section class="bg-white p-6 rounded-2xl shadow-xl mt-10">
+    <h2 class="text-2xl font-bold mb-4 text-purple-700">Filtering an Array</h2>
+
+    <?php
+        $posts = [
+        ['title' => 'Learn PHP', 'published' => true],
+        ['title' => 'Master JavaScript', 'published' => false],
+        ['title' => 'Explore Laravel', 'published' => true],
+        ];
+
+        $publishedPosts = array_filter($posts, fn($post) => $post['published']);
+    ?>
+
+    <div>
+        <h3 class="text-lg font-semibold text-gray-800">Published Posts:</h3>
+        <ul class="list-disc list-inside text-gray-700 space-y-1">
+        <?php foreach ($publishedPosts as $post): ?>
+            <li><?= htmlSpecialChars($post['title']) ?></li>
+        <?php endforeach; ?>
+        </ul>
+    </div>
+    </section>
+    <section class="bg-white p-6 rounded-2xl shadow-xl mt-10">
+    <h2 class="text-2xl font-bold mb-4 text-purple-700">Associative Array Filtering</h2>
+
+    <?php
+        $books = [
+        'book1' => ['title' => 'The Hobbit', 'available' => true],
+        'book2' => ['title' => '1984', 'available' => false],
+        'book3' => ['title' => 'Clean Code', 'available' => true],
+        ];
+
+        $availableBooks = array_filter($books, fn($book) => $book['available']);
+    ?>
+
+    <div>
+        <h3 class="text-lg font-semibold text-gray-800">Available Books:</h3>
+        <ul class="list-disc list-inside text-gray-700 space-y-1">
+        <?php foreach ($availableBooks as $key => $book): ?>
+            <li><strong><?= htmlSpecialChars($key) ?></strong>: <?= htmlSpecialChars($book['title']) ?></li>
+        <?php endforeach; ?>
+        </ul>
+    </div>
+    </section>
+    <section class="bg-white p-6 rounded-2xl shadow-xl mt-10">
+    <h2 class="text-2xl font-bold mb-4 text-purple-700">Extracting a Filter Function</h2>
+
+    <?php
+        $books = [
+        ['title' => 'The Pragmatic Programmer', 'author' => 'Andrew Hunt', 'available' => true],
+        ['title' => 'You Don’t Know JS', 'author' => 'Kyle Simpson', 'available' => false],
+        ['title' => 'Refactoring', 'author' => 'Martin Fowler', 'available' => true],
+        ];
+
+        function filterByAvailability($items) {
+        return array_filter($items, fn($item) => $item['available']);
+        }
+
+        $availableBooks = filterByAvailability($books);
+    ?>
+
+    <div>
+        <h3 class="text-lg font-semibold text-gray-800">Books In Stock:</h3>
+        <ul class="list-disc list-inside text-gray-700 space-y-1">
+        <?php foreach ($availableBooks as $book): ?>
+            <li><strong><?= htmlSpecialChars($book['title']) ?></strong> by <?= htmlSpecialChars($book['author']) ?></li>
+        <?php endforeach; ?>
+        </ul>
+    </div>
+    </section>
     <footer class="text-center text-sm text-gray-500 mt-10">
-      All PHP tasks integrated in one report | Hamza Jabbar | <?= date('Y') ?>
+      All PHP tasks integrated in one report | Muhammad Hamza Jabbar | <?= date('Y') ?>
     </footer>
   </div>
 </body>
